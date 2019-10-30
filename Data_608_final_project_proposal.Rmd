@@ -1,0 +1,77 @@
+---
+title: "Oakland Multivariate Crime Analysis"
+author: "Corey Arnouts"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+    toc_depth: 3
+    code_folding: "hide"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA, message=FALSE, warning=FALSE)
+library(tidyverse)
+library(kableExtra)
+library(corrplot)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(Amelia)
+# Thank you Stack Overflow!
+# A Prefix nulling hook.
+
+# Make sure to keep the default for normal processing.
+default_output_hook <- knitr::knit_hooks$get("output")
+
+# Output hooks handle normal R console output.
+knitr::knit_hooks$set( output = function(x, options) {
+
+  comment <- knitr::opts_current$get("comment")
+  if( is.na(comment) ) comment <- ""
+  can_null <- grepl( paste0( comment, "\\s*\\[\\d?\\]" ),
+                     x, perl = TRUE)
+  do_null <- isTRUE( knitr::opts_current$get("null_prefix") )
+  if( can_null && do_null ) {
+    # By default R print output aligns at the right brace.
+    align_index <- regexpr( "\\]", x )[1] - 1
+    # Two cases: start or newline
+    re <- paste0( "^.{", align_index, "}\\]")
+    rep <- comment
+    x <- gsub( re, rep,  x )
+    re <- paste0( "\\\n.{", align_index, "}\\]")
+    rep <- paste0( "\n", comment )
+    x <- gsub( re, rep,  x )
+  }
+
+  default_output_hook( x, options )
+
+})
+knitr::opts_template$set("kill_prefix"=list(comment=NA, null_prefix=TRUE))
+```
+
+# Final Project Proposal
+
+## Oakland Multivariate Analysis
+[Oakland Equity Indicators](https://www.kaggle.com/cityofoakland/oakland-equity-indicators-policing-crime)
+
+[Oakland Data Sources](https://www.kaggle.com/datasets?search=oakland&tags=16439-public+safety)
+
+[Oakland Open Data](https://data.oaklandnet.com/)
+
+For my final project my goal is to do a multivariate analysis of the city of oakland and the different components that may be leading to increased rates of crime. 
+
+## I will address question such as:
+**Are more arrests happening in lower income areas simply because the patrol cars are there more?** 
+
+**What socioeconomic factors are the most strongly correlated with higher rates of crime?**
+
+**What programs has the city intiated to lower crime rates and how have these worked?**
+
+**Is there a link between the quality of education in the city and the amount of crime?**
+
+
+## Tools
+For the tools that I plan on using I think I am going to fully explore R's Shiny Application and all of the different dynamic visualization capabilities that it has. I thought that this was the most intuitive tool to use for me and one that I would like to utilize more in my daily workflow
+
